@@ -17,7 +17,7 @@
     "bulma-divider": "^0.2.0",
     "compression": "^1.7.1",
     "dotenv": "^8.1.0",
-    "elvanto-api": "^1.1.0",
+    "elvanto-api": "github:featherbear/elvanto-node-api#es6_update",
     "polka": "next",
     "sirv": "^0.4.0",
     "sqlite3": "^4.1.0",
