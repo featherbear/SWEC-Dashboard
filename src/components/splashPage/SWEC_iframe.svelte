@@ -1,18 +1,15 @@
 <style>
-  /* .thumbnail-container {
-    width: 300px;
-    height: 200px;
-} */
   iframe {
     max-width: initial;
   }
 
-  .thumbnail-container {
+  .site-thumbnail {
     width: 320px !important;
     height: 180px !important;
+    position: relative;
   }
 
-  .thumbnail iframe {
+  .site-thumbnail iframe {
     width: 1280px;
     height: 720px;
     border-radius: 30px;
@@ -27,7 +24,7 @@
     -webkit-transform-origin: 0 0;
   }
 
-  .thumbnail:after {
+  .site-thumbnail:after {
     content: "";
     display: block;
     position: absolute;
@@ -38,8 +35,6 @@
   }
 </style>
 
-<div class="thumbnail-container">
-  <div class="thumbnail">
+<div class="site-thumbnail">
     <iframe src="https://swec.org.au" />
-  </div>
 </div>
