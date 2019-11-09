@@ -3,4 +3,9 @@ body {
   font-family: "Open Sans", serif;
   font-size: 14px;
   font-weight: 300;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
 }
