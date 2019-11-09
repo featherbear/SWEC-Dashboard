@@ -59,6 +59,14 @@
                 </a>
               </li>
               <li>
+                <a href="https://soundcloud.com/swechurch">
+                  <span class="icon">
+                    <i class="fab fa-soundcloud" />
+                  </span>
+                  SoundCloud
+                </a>
+              </li>
+              <li>
                 <a>
                   <span class="icon">
                     <i class="fas fa-file-alt" />
