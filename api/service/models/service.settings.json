@@ -1,0 +1,31 @@
+{
+  "connection": "default",
+  "collectionName": "services",
+  "info": {
+    "name": "service"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "date": {
+      "type": "date"
+    },
+    "name": {
+      "type": "string"
+    },
+    "congregation": {
+      "model": "congregation"
+    },
+    "sermon": {
+      "model": "sermon"
+    },
+    "finance": {
+      "model": "finance"
+    },
+    "notices": {
+      "collection": "notice"
+    }
+  }
+}

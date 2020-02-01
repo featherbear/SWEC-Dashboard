@@ -1,0 +1,33 @@
+{
+  "connection": "default",
+  "collectionName": "finances",
+  "info": {
+    "name": "finance"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "month_actual": {
+      "type": "decimal",
+      "required": true
+    },
+    "month_budget": {
+      "type": "decimal",
+      "required": true
+    },
+    "ytd_actual": {
+      "type": "decimal",
+      "required": true
+    },
+    "ytd_budget": {
+      "type": "decimal",
+      "required": true
+    },
+    "month": {
+      "type": "string",
+      "unique": true
+    }
+  }
+}

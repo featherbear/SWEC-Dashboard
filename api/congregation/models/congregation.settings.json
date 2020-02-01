@@ -1,0 +1,26 @@
+{
+  "connection": "default",
+  "collectionName": "congregations",
+  "info": {
+    "name": "congregation"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "contact_number": {
+      "type": "string"
+    },
+    "contact_address": {
+      "type": "string"
+    }
+  }
+}

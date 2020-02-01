@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/congregations",
+      "handler": "congregation.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/congregations/count",
+      "handler": "congregation.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/congregations/:id",
+      "handler": "congregation.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/congregations",
+      "handler": "congregation.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/congregations/:id",
+      "handler": "congregation.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/congregations/:id",
+      "handler": "congregation.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
