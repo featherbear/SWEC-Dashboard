@@ -271,6 +271,12 @@ module.exports = {
         ? ctx.query.callback
         : grantConfig[provider].callback
 
+    // Custom changes
+    grantConfig[provider].redirect_uri =
+      ctx.query && ctx.query.redirect_uri
+        ? ctx.query.redirect_uri
+        : grantConfig[provider].redirect_uri
+
     return grant(grantConfig)(ctx, next)
   },
 
