@@ -1,6 +1,7 @@
 <script>
   import Button from "svelma/src/components/Button.svelte";
   import Divider from "../../components/Divider.svelte";
+  import ElvantoLogin from "../../components/ElvantoLoginButton.svelte";
 
   import { onMount } from "svelte";
 
@@ -90,6 +91,7 @@
         <div class="notification is-warning" id="errorMessage" />
 
         <div class="box">
+          <ElvantoLogin />
           <Divider content="OR" />
           <form method="post" autocomplete="on">
             <div class="field">
