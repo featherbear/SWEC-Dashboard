@@ -30,7 +30,8 @@ module.exports = strapi => {
           scope: ['ManagePeople', 'ManageCalendar'],
           custom_params: {
             type: 'web_server'
-          }
+          },
+          dynamic: ["redirect_uri"]
         }
       }
 
