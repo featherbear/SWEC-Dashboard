@@ -19,20 +19,19 @@ module.exports = strapi => {
       })
 
       let data = await grantStore.get()
+      if (!data) return
       if (!data['elvanto']) return
 
       data['elvanto'] = {
         ...data['elvanto'],
-        ...{
-          authorize_url: 'https://api.elvanto.com/oauth',
-          access_url: 'https://api.elvanto.com/oauth/token',
-          oauth: 2,
-          scope: ['ManagePeople', 'ManageCalendar'],
-          custom_params: {
-            type: 'web_server'
-          },
-          dynamic: ["redirect_uri"]
-        }
+        authorize_url: 'https://api.elvanto.com/oauth',
+        access_url: 'https://api.elvanto.com/oauth/token',
+        oauth: 2,
+        scope: ['ManagePeople', 'ManageCalendar'],
+        custom_params: {
+          type: 'web_server'
+        },
+        dynamic: ["redirect_uri"]
       }
 
       await grantStore.set({ key: 'grant', value: data })
