@@ -2,34 +2,9 @@
   import Button from "svelma/src/components/Button.svelte";
   import Divider from "../../components/Divider.svelte";
   import ElvantoLogin from "../../components/ElvantoLoginButton.svelte";
+  import { fade } from "svelte/transition";
 
-  import { onMount } from "svelte";
-
-  onMount(() => {
-    let __data = {};
-    location.search
-      .substr(1)
-      .split(/(?:[^\\])&/)
-      .forEach(function(keyPair) {
-        keyPair = keyPair.split(/=(.+)/);
-        __data[keyPair[0]] = decodeURI(keyPair[1]);
-      });
-    if (__data.hasOwnProperty("error")) {
-      var message;
-      switch (__data["error"]) {
-        case "locked":
-          message = "Account is locked";
-          break;
-        case "badauth":
-          message = "Incorrect username/password";
-          break;
-        default:
-          message = "Something went wrong...";
-      }
-      document.getElementById("errorMessage").innerText = message;
-      document.getElementById("errorMessage").style.display = "block";
-    }
-  });
+  let showManualLogin = false;
 </script>
 
 <style>
@@ -39,15 +14,6 @@
 
   input {
     font-weight: 300;
-  }
-
-  #errorMessage:before {
-    content: "Logon failure: ";
-  }
-
-  #errorMessage {
-    display: none;
-    font-weight: bold;
   }
 
   .background {
@@ -67,7 +33,7 @@
   }
 
   .background::after {
-    content: "\A";
+    content: "";
     position: absolute;
     width: 100%;
     height: 100%;
@@ -87,49 +53,51 @@
     <div class="container has-text-centered">
       <div class="column is-4 is-offset-4">
         <h3 class="title has-text-white">Login to Dashboard</h3>
-
-        <div class="notification is-warning" id="errorMessage" />
-
         <div class="box">
           <ElvantoLogin />
           <Divider content="OR" />
-          <form method="post" autocomplete="on">
-            <div class="field">
-              <div class="control has-icons-left">
-                <input
-                  class="input is-medium"
-                  type="text"
-                  placeholder="Username"
-                  name="username"
-                  autofocus
-                  required />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-user" />
-                </span>
+          {#if !showManualLogin}
+            <Button on:click={() => (showManualLogin = true)}>
+              Login manually
+            </Button>
+          {:else}
+            <form method="post" autocomplete="on" transition:fade>
+              <div class="field">
+                <div class="control has-icons-left">
+                  <input
+                    class="input is-medium"
+                    type="text"
+                    placeholder="Username"
+                    name="username"
+                    required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-user" />
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div class="field">
-              <div class="control has-icons-left">
-                <input
-                  class="input is-medium"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  required />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-lock" />
-                </span>
+              <div class="field">
+                <div class="control has-icons-left">
+                  <input
+                    class="input is-medium"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock" />
+                  </span>
+                </div>
               </div>
-            </div>
-            <input type="hidden" name="next" />
+              <input type="hidden" name="next" />
 
-            <button
-              class="button is-block is-info is-medium is-fullwidth"
-              type="submit">
-              Login
-            </button>
-          </form>
+              <Button
+                class="is-block is-info is-medium is-fullwidth"
+                type="submit">
+                Login
+              </Button>
+            </form>
+          {/if}
         </div>
       </div>
     </div>
