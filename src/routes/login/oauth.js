@@ -26,7 +26,7 @@ export async function get (req, res, next) {
     })
   )
 
-  let data = await fetch('http://api.elvanto.com/oauth/token', {
+  let data = await fetch('https://api.elvanto.com/oauth/token', {
     method: 'POST',
     body: `grant_type=authorization_code&client_id=${ELVANTO_CLIENT_ID}&client_secret=${ELVANTO_CLIENT_SECRET}&code=${req.query.code}&redirect_uri=${ELVANTO_OAUTH_RETURN}`,
     headers: {
