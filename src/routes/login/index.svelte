@@ -5,6 +5,31 @@
   import { fade } from "svelte/transition";
 
   let showManualLogin = false;
+  let manualLoginSpin = false;
+  async function handleManualLogin(e) {
+    let username = e.target.username.value;
+    let password = e.target.password.value;
+
+    manualLoginSpin = true;
+    let response = await fetch(location.pathname, {
+      body: JSON.stringify({
+        username,
+        password
+      }),
+      // redirect: 'follow',
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(r => r.json());
+    if (response.error) {
+      // TODO: Error message
+      manualLoginSpin = false;
+      return;
+    } else {
+      location = "/"
+    }
+  }
 </script>
 
 <style>
@@ -61,7 +86,11 @@
               Login manually
             </Button>
           {:else}
-            <form method="post" autocomplete="on" transition:fade>
+            <form
+              method="post"
+              autocomplete="on"
+              transition:fade
+              on:submit|preventDefault={handleManualLogin}>
               <div class="field">
                 <div class="control has-icons-left">
                   <input
@@ -75,7 +104,6 @@
                   </span>
                 </div>
               </div>
-
               <div class="field">
                 <div class="control has-icons-left">
                   <input
@@ -90,10 +118,10 @@
                 </div>
               </div>
               <input type="hidden" name="next" />
-
               <Button
-                class="is-block is-info is-medium is-fullwidth"
-                type="submit">
+                loading={manualLoginSpin}
+                nativeType="submit"
+                class="is-block is-info is-medium is-fullwidth">
                 Login
               </Button>
             </form>
