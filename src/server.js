@@ -6,14 +6,21 @@ import * as sapper from '@sapper/server'
 import { json } from 'body-parser'
 import cookierParser from 'cookie-parser'
 
-import jwt_decode from 'jwt-decode'
+import nJwt from 'njwt'
 
-// import dotenv from 'dotenv'
+import fs from 'fs'
 
-// import core from './backend/core'
-// dotenv.config()
+let cryptoKey;
+try {
+  cryptoKey = Buffer.from(fs.readFileSync('.key', 'utf8'))
+} catch (err) {
+  console.log("Generating secure key")
+  cryptoKey = require('secure-random')(256, {type: 'Buffer'});
+  fs.writeFileSync('.key', cryptoKey, 'utf8')
+}
 
-// global.core = new core()
+import dotenv from 'dotenv'
+dotenv.config()
 
 const { PORT, NODE_ENV } = process.env
 const dev = NODE_ENV === 'development'

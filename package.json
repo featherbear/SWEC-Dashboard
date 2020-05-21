@@ -28,8 +28,9 @@
     "dotenv": "^8.1.0",
     "elvanto-api": "github:featherbear/elvanto-node-api#es6_update",
     "global": "^4.4.0",
-    "jwt-decode": "^2.2.0",
+    "njwt": "^1.0.0",
     "polka": "next",
+    "secure-random": "^1.1.2",
     "sirv": "^0.4.0",
     "sqlite3": "^4.1.0",
     "svelma": "^0.1.0"
