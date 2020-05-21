@@ -6,18 +6,8 @@ import * as sapper from '@sapper/server'
 import { json } from 'body-parser'
 import cookierParser from 'cookie-parser'
 
+import data from './data.js'
 import nJwt from 'njwt'
-
-import fs from 'fs'
-
-let cryptoKey;
-try {
-  cryptoKey = Buffer.from(fs.readFileSync('.key', 'utf8'))
-} catch (err) {
-  console.log("Generating secure key")
-  cryptoKey = require('secure-random')(256, {type: 'Buffer'});
-  fs.writeFileSync('.key', cryptoKey, 'utf8')
-}
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -36,20 +26,11 @@ polka() // You can also use Express
     sirv('static', { dev }),
     sapper.middleware({
       session: (req, res) => {
-        let data = null
-
         try {
-          data = jwt_decode(req.cookies.token)
-          data.token = req.cookies.token
-          
-          if (data.exp < Date.now() / 1000) {
-            data = null
-          }
-        } catch (e) {
-          data = null
+          return {...nJwt.verify(req.cookies.token, data.cryptoKey).body}
+        } catch {
+          return null
         }
-
-        return data
       }
     })
   )
