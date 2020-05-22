@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
 import { Model as User } from '../../schemas/User'
 
-User.create({ username: 'admin', isLocal: true, password: 'password' })
+User.create({ username: 'admin', isLocal: true, password: 'password' , admin: true})
 
 async function handleLocal (username, password) {
   let user = await User.findOne({
@@ -15,7 +15,7 @@ async function handleLocal (username, password) {
     return JSON.stringify({
       status: true,
       jwt: createToken({
-        sub: user.username,
+        sub: user._id,
         name: user.firstName || user.username,
         admin: user.admin
       })
@@ -52,7 +52,7 @@ async function handleElvanto (token) {
     return JSON.stringify({
       status: true,
       jwt: createToken({
-        sub: user.username,
+        sub: user._id,
         name: user.firstName,
         admin: user.admin
       })
