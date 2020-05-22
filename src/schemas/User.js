@@ -1,14 +1,24 @@
 import mongoose from 'mongoose'
-import mongoose_bcrypt from 'mongoose-bcrypt'
 
-let User = new mongoose.Schema({
-  username: { type: String, required: true, unique: true, lowercase: true, trim: true },
+const UserSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
   firstName: { type: String, trim: true },
   lastName: { type: String, trim: true },
-  isLocal: {type: Boolean, default: false},
-  password: {type: String, bcrypt: true},
+  isLocal: { type: Boolean, default: false },
+  password: { type: String, bcrypt: true },
   admin: { type: Boolean, default: false }
 })
-User.plugin(mongoose_bcrypt)
+UserSchema.plugin(require('mongoose-bcrypt'))
 
-export default User
+export const Schema = UserSchema
+export const Model = mongoose.model('User', Schema)
+export default {
+  Schema,
+  Model
+}

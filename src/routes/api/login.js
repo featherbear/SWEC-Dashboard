@@ -2,12 +2,12 @@ import nJwt from 'njwt'
 import data from '../../data'
 import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
-import { Model } from '../../schemas'
+import { Model as User } from '../../schemas/User'
 
-Model.User.create({username: 'admin', isLocal:true,password: 'password'})
+User.create({ username: 'admin', isLocal: true, password: 'password' })
 
 async function handleLocal (username, password) {
-  let user = await Model.User.findOne({
+  let user = await User.findOne({
     username: 'admin',
     isLocal: true
   })
@@ -43,7 +43,7 @@ async function handleElvanto (token) {
   if (userInfo.status === 'ok') {
     let userData = userInfo.person[0]
 
-    let user = await Model.User.findOneAndUpdate(
+    let user = await User.findOneAndUpdate(
       {
         username: userData.id,
         isLocal: false
