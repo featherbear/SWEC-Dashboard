@@ -12,11 +12,19 @@ export async function get (req, res, next) {
   if (!req.query['code']) {
     return redirect(
       res,
-      elvanto.authorizeUrl(ELVANTO_CLIENT_ID, ELVANTO_OAUTH_RETURN, ["ManagePeople","ManageCalendar"])
+      elvanto.authorizeUrl(ELVANTO_CLIENT_ID, ELVANTO_OAUTH_RETURN, [
+        'ManagePeople',
+        'ManageCalendar'
+      ])
     )
   }
 
-  let token_data = await elvanto.exchangeToken(ELVANTO_CLIENT_ID, ELVANTO_CLIENT_SECRET, req.query.code, ELVANTO_OAUTH_RETURN)
+  let token_data = await elvanto.exchangeToken(
+    ELVANTO_CLIENT_ID,
+    ELVANTO_CLIENT_SECRET,
+    req.query.code,
+    ELVANTO_OAUTH_RETURN
+  )
 
   if (token_data.error) {
     res.write(JSON.stringify(token_data))
@@ -26,14 +34,18 @@ export async function get (req, res, next) {
 
   let { access_token } = token_data
 
-  let data = await fetch('/api/login', {
+  let data = await fetch('http://localhost:3000/api/login', {
     method: 'POST',
     body: JSON.stringify({
       type: 'elvanto',
       token: access_token
-    })
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }).then(r => r.json())
 
+  console.log(data)
   if (data.status) {
     res.cookie('token', data.jwt, {
       path: '/'

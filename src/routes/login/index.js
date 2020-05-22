@@ -1,4 +1,6 @@
-const fetch = require('node-fetch')
+import fetch from 'node-fetch'
+import mongoose from 'mongoose'
+
 
 export async function post (req, res, next) {
   let response = await fetch('http://localhost:3000/api/login', {

@@ -2,27 +2,40 @@ import nJwt from 'njwt'
 import data from '../../data'
 import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
+// import mongoose from 'mongoose'
+import { Model } from '../../schemas'
+
+let a = Model.User.create({
+  username: 'admin',
+  password: 'password',
+  isLocal: true
+})
 
 async function handleLocal (username, password) {
-  // TODO: connect with mongo db --- user.id
-  if (username === 'admin' && password === 'password') {
-    return
-    JSON.stringify({
+  let user = await Model.User.findOne({
+    username: 'admin',
+    isLocal: true
+  })
+
+  if (user && user.verifyPasswordSync(password)) {
+    return JSON.stringify({
       status: true,
       jwt: nJwt
         .create(
           {
-            sub: '0',
-            name: 'root',
-            admin: true
+            sub: user.username,
+            name: user.firstName,
+            admin: user.admin
           },
           data.cryptoKey
         )
         .compact()
     })
   } else {
-    return
-    JSON.stringify({ status: false, error: 'Invalid username / password' })
+    return JSON.stringify({
+      status: false,
+      error: 'Invalid username / password'
+    })
   }
 }
 
@@ -30,29 +43,58 @@ async function handleElvanto (token) {
   let Elvanto = new elvanto.Client({
     accessToken: token
   })
+
   let userInfo = await Elvanto.apiCall('people/currentUser')
-
   if (userInfo.status === 'ok') {
-    let user = userInfo.person[0]
-    // user.status;
+    let userData = userInfo.person[0]
 
-    //     id: user.id,
-    //     first_name: user.preferred_name || user.firstname,
-    //     last_name: user.lastname
+    let user = await Model.User.findOneAndUpdate(
+      {
+        username: userData.id,
+        isLocal: false
+      },
+      {
+        firstName: userData.preferred_name || userData.firstname,
+        lastName: userData.lastname
+      },
+      { new: true, upsert: true }
+    )
+
+    return JSON.stringify({
+      status: true,
+      jwt: nJwt
+        .create(
+          {
+            sub: user.username,
+            name: user.firstName,
+            admin: user.admin
+          },
+          data.cryptoKey
+        )
+        .compact()
+    })
   } else {
-    return JSON.stringify({ status: false, error: 'OAuth failure' })
+    return JSON.stringify({
+      status: false,
+      error: 'OAuth failure'
+    })
   }
 }
 
 export async function post (req, res, next) {
   switch (req.body.type) {
     case 'local':
-      return res.end(handleLocal(req.body.username, req.body.password))
+      return res.end(await handleLocal(req.body.username, req.body.password))
     case 'elvanto':
-      return res.end(handleElvanto(req.body.token))
+      return res.end(await handleElvanto(req.body.token))
     default:
-      return res.end(
-        JSON.stringify({ status: false, error: 'Invalid login scheme' })
+      res.write(
+        JSON.stringify({
+          status: false,
+          error: 'Invalid login scheme'
+        })
       )
+      res.statusCode = 401
+      return res.end()
   }
 }
