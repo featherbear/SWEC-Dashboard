@@ -23,12 +23,12 @@
     })[0];
 
     calendar.on("date:selected", date => {
-      document.querySelector("[type=hidden][name=date]").value = date.start
+      document.querySelector("[type=hidden][name=startDate]").value = date.start
         ? moment(date.start).format("DD/MM/YYYY")
         : 0;
       document.querySelector("[type=hidden][name=endDate]").value = date.end
         ? moment(date.end).format("DD/MM/YYYY")
-        : document.querySelector("[type=hidden][name=date]").value;
+        : document.querySelector("[type=hidden][name=startDate]").value;
     });
   });
 </script>
@@ -37,10 +37,10 @@
   on:submit|preventDefault={e => {
     let form = e.target;
     dispatch('submit', {
-      title: form.name.value,
+      title: form.title.value,
       description: form.description.value,
       sites: sites.map(v => form[`site_${v._id}`].checked),
-      startDate: form.date.value,
+      startDate: form.startDate.value,
       endDate: form.endDate.value
     });
   }}>
@@ -85,7 +85,7 @@
     <div class="label">Dates</div>
     <div class="control">
       <div type="date" bind:this={calendarElement} />
-      <input type="hidden" name="date" />
+      <input type="hidden" name="startDate" />
       <input type="hidden" name="endDate" />
     </div>
   </div>
