@@ -29,14 +29,14 @@ export function authWrapper (callback, options) {
         token = key
       }
     }
-    
+
     let claim = (req.session = decode(token))
     if (
       (authOptions.login && !claim) ||
       (authOptions.admin && (!claim || !claim.admin))
     ) {
+      res.writeHead(403)
       res.write(JSON.stringify({ status: false, error: 'Not authorised' }))
-      res.statusCode = 403
       return res.end()
     } else {
       return callback(req, res, next)
