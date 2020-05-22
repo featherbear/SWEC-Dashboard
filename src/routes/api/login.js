@@ -11,6 +11,13 @@ async function handleLocal (username, password) {
     isLocal: true
   })
 
+  if (user.disabled) {
+    return JSON.stringify({
+      status: false,
+      error: 'Your account is disabled'
+    })
+  }
+
   if (user && user.verifyPasswordSync(password)) {
     return JSON.stringify({
       status: true,
@@ -48,6 +55,13 @@ async function handleElvanto (token) {
       },
       { new: true, upsert: true }
     )
+
+    if (user.disabled) {
+      return JSON.stringify({
+        status: false,
+        error: 'Your account is disabled'
+      })
+    }
 
     return JSON.stringify({
       status: true,

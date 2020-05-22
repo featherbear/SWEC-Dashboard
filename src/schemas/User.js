@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema({
   lastName: { type: String, trim: true },
   isLocal: { type: Boolean, default: false },
   password: { type: String, bcrypt: true },
-  admin: { type: Boolean, default: false }
+  admin: { type: Boolean, default: false },
+  disabled: { type: Boolean, default: false },
 })
 UserSchema.plugin(require('mongoose-bcrypt'))
 
