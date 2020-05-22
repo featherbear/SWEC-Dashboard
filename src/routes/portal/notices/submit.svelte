@@ -1,20 +1,17 @@
 <script context="module">
   export async function preload({ params, query }, session) {
-    console.log(session.token);
-    const data = await this.fetch("http://localhost:1337/notices", {
-      headers: {
-        Authorization: `Bearer ${session.token}`
-      }
-    }).then(r => r.json());
-
-    console.log(data);
-    return { data };
+    
+    return { sites: await this.fetch("http://localhost:3000/api/sites").then(r=>r.json()) };
   }
 </script>
 
 <script>
+
   import Form from "../../../components/NoticeSubmitForm.svelte";
-  export let data;
+  export let sites;
+  let submitHandler = function({detail}) {
+    console.log(detail);
+  }
 </script>
 
-<Form />
+<Form {sites} on:submit={submitHandler} />
