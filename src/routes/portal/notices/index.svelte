@@ -1,14 +1,6 @@
 <script context="module">
   export async function preload({ params, query }, session) {
-    console.log(session.token);
-    const data = await this.fetch("http://localhost:1337/notices", {
-      headers: {
-        Authorization: `Bearer ${session.token}`
-      }
-    }).then(r => r.json());
-
-    console.log(data);
-    return { data };
+    return { data: await this.fetch("http://localhost:3000/api/notices").then(r=>r.json()) };
   }
 </script>
 
@@ -17,9 +9,7 @@
 </script>
 
 <ul>
-
   {#each data as entry}
     <li>{entry.title} - {entry.description}</li>
   {/each}
-
 </ul>
