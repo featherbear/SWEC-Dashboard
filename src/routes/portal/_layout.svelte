@@ -1,5 +1,6 @@
 <script context="module">
   export async function preload(page, session) {
+    console.log("Layout session", session);
     const fail = () => this.redirect(302, "/login");
     if (!session) return fail();
     return { session };

@@ -32,6 +32,7 @@ mongoose
         sirv('static', { dev }),
         sapper.middleware({
           session: (req, res) => {
+            console.log("Decode session cookie");
             return decode(req.cookies.token)
           }
         })
