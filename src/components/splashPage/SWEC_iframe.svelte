@@ -36,5 +36,5 @@
 </style>
 
 <div class="site-thumbnail">
-    <iframe src="https://swec.org.au" />
+    <iframe title="SWEC" src="https://swec.org.au" />
 </div>

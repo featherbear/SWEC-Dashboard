@@ -2,14 +2,9 @@ import nJwt from 'njwt'
 import data from '../../data'
 import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
-// import mongoose from 'mongoose'
 import { Model } from '../../schemas'
 
-let a = Model.User.create({
-  username: 'admin',
-  password: 'password',
-  isLocal: true
-})
+Model.User.create({username: 'admin', isLocal:true,password: 'password'})
 
 async function handleLocal (username, password) {
   let user = await Model.User.findOne({
@@ -24,7 +19,7 @@ async function handleLocal (username, password) {
         .create(
           {
             sub: user.username,
-            name: user.firstName,
+            name: user.firstName || user.username,
             admin: user.admin
           },
           data.cryptoKey

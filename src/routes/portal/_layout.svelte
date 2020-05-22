@@ -1,8 +1,16 @@
+<script context="module">
+  export async function preload(page, session) {
+    const fail = () => this.redirect(302, "/login");
+    if (!session) return fail();
+    return { session };
+  }
+</script>
+
 <script>
   import Nav from "../../components/Nav.svelte";
   import Sidebar from "../../components/Sidebar.svelte";
 
-  export let segment;
+  export let session;
 </script>
 
 <style>
@@ -20,10 +28,9 @@
 </style>
 
 <Nav />
-
 <div class="columns">
   <div class="column is-2" id="sidebarContainer">
-    <Sidebar {segment} />
+    <Sidebar showAdmin={session.admin} />
   </div>
 
   <div class="column">

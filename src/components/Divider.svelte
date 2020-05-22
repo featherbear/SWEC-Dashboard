@@ -3,4 +3,4 @@
   export let content;
 </script>
 
-<div class="is-divider" data-content="{content}"></div>
+<div class="is-divider" data-content="{content}" />

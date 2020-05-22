@@ -1,3 +1,4 @@
+
 <script>
   import Banner from "../components/splashPage/Banner.svelte";
   import SWECiframe from "../components/splashPage/SWEC_iframe.svelte";
@@ -67,7 +68,7 @@
                 </a>
               </li>
               <li>
-                <a>
+                <a href="#/"> <!-- TODO: LATEST BULLETIN LINK -->
                   <span class="icon">
                     <i class="fas fa-file-alt" />
                   </span>
