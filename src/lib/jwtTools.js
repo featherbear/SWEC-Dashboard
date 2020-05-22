@@ -22,8 +22,15 @@ export function authWrapper (callback, options) {
   authOptions = { ...authOptions, ...(options || {}) }
 
   return function (req, res, next) {
-    let claim = decode(req.cookies.token)
-    console.log(claim);
+    let token = req.cookies.token
+    if (!token && req.headers.authorization) {
+      let [type, key] = req.headers.authorization.split(' ')
+      if (type === 'Bearer') {
+        token = key
+      }
+    }
+    
+    let claim = (req.session = decode(token))
     if (
       (authOptions.login && !claim) ||
       (authOptions.admin && (!claim || !claim.admin))
@@ -32,7 +39,7 @@ export function authWrapper (callback, options) {
       res.statusCode = 403
       return res.end()
     } else {
-      return callback(...arguments)
+      return callback(req, res, next)
     }
   }
 }
