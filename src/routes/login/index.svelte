@@ -27,7 +27,7 @@
       manualLoginSpin = false;
       return;
     } else {
-      location = "/"
+      location = "/portal"
     }
   }
 </script>
