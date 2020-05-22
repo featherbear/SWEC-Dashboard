@@ -66,9 +66,6 @@
       <li>
         <a href="/portal/users">User Management</a>
       </li>
-      <li>
-        <a href="/portal/audit">Audit Log</a>
-      </li>
     </ul>
   {/if}
 </aside>
