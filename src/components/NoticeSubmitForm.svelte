@@ -51,7 +51,8 @@
         class="input"
         type="text"
         placeholder="Notice title"
-        name="title" />
+        name="title"
+        required />
     </div>
   </div>
 
@@ -61,7 +62,8 @@
       <textarea
         class="textarea"
         placeholder="Notice description"
-        name="description" />
+        name="description"
+        required />
     </div>
   </div>
 
