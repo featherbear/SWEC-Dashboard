@@ -1,5 +1,4 @@
-import nJwt from 'njwt'
-import data from '../../data'
+import { createToken } from '../../lib/jwtTools'
 import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
 import { Model as User } from '../../schemas/User'
@@ -15,16 +14,11 @@ async function handleLocal (username, password) {
   if (user && user.verifyPasswordSync(password)) {
     return JSON.stringify({
       status: true,
-      jwt: nJwt
-        .create(
-          {
-            sub: user.username,
-            name: user.firstName || user.username,
-            admin: user.admin
-          },
-          data.cryptoKey
-        )
-        .compact()
+      jwt: createToken({
+        sub: user.username,
+        name: user.firstName || user.username,
+        admin: user.admin
+      })
     })
   } else {
     return JSON.stringify({
@@ -57,16 +51,11 @@ async function handleElvanto (token) {
 
     return JSON.stringify({
       status: true,
-      jwt: nJwt
-        .create(
-          {
-            sub: user.username,
-            name: user.firstName,
-            admin: user.admin
-          },
-          data.cryptoKey
-        )
-        .compact()
+      jwt: createToken({
+        sub: user.username,
+        name: user.firstName,
+        admin: user.admin
+      })
     })
   } else {
     return JSON.stringify({
