@@ -15,6 +15,10 @@
 </script>
 
 <style>
+  aside > a {
+    color: #4a4a4a;
+  }
+
   .menu-label {
     color: #8f99a3;
     letter-spacing: 1.3;
@@ -28,42 +32,42 @@
 </style>
 
 <aside class="menu">
-  <a href="/portal/">Dashboard</a>
+  <a href="/portal">Dashboard</a>
   <p class="menu-label">Notices</p>
   <ul class="menu-list">
     <li>
-      <a href="/portal/notices/submit/">Submit Notice</a>
+      <a href="/portal/notices/submit">Submit Notice</a>
     </li>
     <li>
-      <a href="/portal/notices/">View Notices</a>
+      <a href="/portal/notices">View Notices</a>
     </li>
   </ul>
   <p class="menu-label">Bulletin</p>
   <ul class="menu-list">
     <li>
-      <a href="/portal/bulletin/generate/">Generate Bulletin</a>
+      <a href="/portal/bulletin/generate">Generate Bulletin</a>
     </li>
     <li>
-      <a href="/portal/bulletin/view/">View Bulletins</a>
+      <a href="/portal/bulletin/view">View Bulletins</a>
     </li>
   </ul>
   <p class="menu-label">Sermon Outline</p>
   <ul class="menu-list">
     <li>
-      <a href="/portal/sermon/">Manage Outlines</a>
+      <a href="/portal/sermon">Manage Outlines</a>
     </li>
   </ul>
   {#if showAdmin }
     <p class="menu-label">Admin</p>
     <ul class="menu-list">
       <li>
-        <a href="/portal/admin/sites/">Manage Sites</a>
+        <a href="/portal/sites">Manage Sites</a>
       </li>
       <li>
-        <a href="/portal/admin/users/">User Management</a>
+        <a href="/portal/users">User Management</a>
       </li>
       <li>
-        <a href="/portal/admin/audit/">Audit Log</a>
+        <a href="/portal/audit">Audit Log</a>
       </li>
     </ul>
   {/if}
