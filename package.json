@@ -29,6 +29,7 @@
     "elvanto-api": "github:featherbear/elvanto-node-api#es6_update",
     "global": "^4.4.0",
     "mongoose": "^5.9.15",
+    "mongoose-autopopulate": "^0.12.2",
     "mongoose-bcrypt": "^1.8.0",
     "njwt": "^1.0.0",
     "polka": "next",
