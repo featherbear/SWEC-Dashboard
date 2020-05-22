@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const NoticeSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, required: true },
   description: { type: String, required: true },
   startDate: Date,
   endDate: Date,
