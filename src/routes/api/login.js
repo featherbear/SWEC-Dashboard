@@ -14,7 +14,7 @@ User.create({
 
 async function handleLocal (username, password) {
   let user = await User.findOne({
-    username: 'admin',
+    username: username,
     isLocal: true
   })
   if (!user) {
@@ -38,7 +38,6 @@ async function handleLocal (username, password) {
       jwt: createToken({
         sub: user._id,
         name: user.firstName || user.username
-        admin: user.admin
       })
     })
   } else {
