@@ -5,5 +5,11 @@ Site.create({
 })
 
 export async function get (req, res, next) {
-  return res.end(JSON.stringify(await Site.find()))
+  let sites = await Site.find({}, null, {lean: true})
+  // {[id: ID, a: ..., b: ..., c: ...], ...} to {id: {a: ..., b: ..., c: ...}, ...}
+  sites = Object.fromEntries(
+    sites.map(({ _id, ...data }) => [_id, data])
+  )
+
+  return res.end(JSON.stringify(sites))
 }

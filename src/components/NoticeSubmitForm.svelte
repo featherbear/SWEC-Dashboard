@@ -5,15 +5,18 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-  export let sites = [];
+  export let sites = {};
 
+  let elem;
+  
+  let calendar;
   let calendarElement;
   onMount(async () => {
     let bulmaCalendar = (await import(
       "bulma-calendar/dist/js/bulma-calendar.min.js"
     )).default;
 
-    var calendar = bulmaCalendar.attach(calendarElement, {
+    calendar = bulmaCalendar.attach(calendarElement, {
       clearButton: false,
       todayButton: false,
       displayMode: "inline",
@@ -21,27 +24,18 @@
       disabledWeekDays: [1, 2, 3, 4, 5, 6]
       // Sunday is 0
     })[0];
-
-    calendar.on("date:selected", date => {
-      document.querySelector("[type=hidden][name=startDate]").value = date.start
-        ? moment(date.start).format("DD/MM/YYYY")
-        : 0;
-      document.querySelector("[type=hidden][name=endDate]").value = date.end
-        ? moment(date.end).format("DD/MM/YYYY")
-        : document.querySelector("[type=hidden][name=startDate]").value;
-    });
   });
 </script>
 
 <form
-  on:submit|preventDefault={e => {
-    let form = e.target;
+  bind:this={elem}
+  on:submit|preventDefault={() => {
     dispatch('submit', {
-      title: form.title.value,
-      description: form.description.value,
-      sites: sites.map(v => form[`site_${v._id}`].checked),
-      startDate: form.startDate.value,
-      endDate: form.endDate.value
+      title: elem.title.value,
+      description: elem.description.value,
+      sites: Object.keys(sites).filter(id => elem[`site_${id}`].checked),
+      startDate: calendar.startDate,
+      endDate: calendar.endDate || calendar.startDate
     });
   }}>
   <div class="field">
@@ -71,13 +65,13 @@
     <div class="label">Appear On</div>
     <div class="control">
       <div class="field" name="siteField">
-        {#each sites as site}
+        {#each Object.entries(sites) as [id, data]}
           <input
             class="is-checkradio is-block is-primary"
             type="checkbox"
-            id={'site_' + site._id}
-            name={'site_' + site._id} />
-          <label for={'site_' + site._id}>{site.title}</label>
+            id={'site_' + id}
+            name={'site_' + id} />
+          <label for={'site_' + id}>{data.title}</label>
         {/each}
       </div>
     </div>
@@ -87,8 +81,6 @@
     <div class="label">Dates</div>
     <div class="control">
       <div type="date" bind:this={calendarElement} />
-      <input type="hidden" name="startDate" />
-      <input type="hidden" name="endDate" />
     </div>
   </div>
 
