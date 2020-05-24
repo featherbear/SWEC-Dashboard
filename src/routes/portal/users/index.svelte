@@ -11,8 +11,10 @@
 <script>
   export let data = [];
 
-  async function toggleDisabled(entry) {
+  async function toggleDisabled(index) {
+    let entry = data[index];
     let newState = !entry.disabled;
+
     let result = await fetch("/api/users", {
       method: "PATCH",
       body: JSON.stringify({
@@ -22,15 +24,17 @@
       headers: { "Content-Type": "application/json" }
     });
     if (result.status) {
-      let idx = data.findIndex(d => d._id == entry._id );
-      data = [
-        ...data.slice(0, idx),
-        { ...entry, disabled: newState },
-        ...data.slice(idx + 1)
-      ];
+      data[index].disabled = newState
+      // let idx = data.findIndex(d => d._id == entry._id );
+      // data = [
+      //   ...data.slice(0, idx),
+      //   { ...entry, disabled: newState },
+      //   ...data.slice(idx + 1)
+      // ];
     }
   }
-  async function toggleAdmin(entry) {
+  async function toggleAdmin(index) {
+    let entry = data[index];
     let newState = !entry.admin;
     let result = await fetch("/api/users", {
       method: "PATCH",
@@ -41,12 +45,13 @@
       headers: { "Content-Type": "application/json" }
     });
     if (result.status) {
-      let idx = data.findIndex(d => d._id == entry._id );
-      data = [
-        ...data.slice(0, idx),
-        { ...entry, admin: newState },
-        ...data.slice(idx + 1)
-      ];
+      data[index].admin = newState;
+      // let idx = data.findIndex(d => d._id == entry._id );
+      // data = [
+      //   ...data.slice(0, idx),
+      //   { ...entry, admin: newState },
+      //   ...data.slice(idx + 1)
+      // ];
     }
   }
   async function changePassword(entry) {}
@@ -84,7 +89,7 @@
     </tr>
   </thead>
   <tbody>
-    {#each data as entry (entry._id)}
+    {#each data as entry, index (entry._id)}
       <tr>
         <td class:disabled={entry.disabled}>{entry.username}</td>
         <td class:disabled={entry.disabled}>{entry.firstName || '-'}</td>
@@ -105,16 +110,16 @@
             </div>
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">
-                <a class="dropdown-item" on:click={() => toggleDisabled(entry)}>
+                <a class="dropdown-item" on:click={() => toggleDisabled(index)}>
                   {#if entry.disabled}Enable account{:else}Disable account{/if}
                 </a>
-                <a class="dropdown-item" on:click={() => toggleAdmin(entry)}>
+                <a class="dropdown-item" on:click={() => toggleAdmin(index)}>
                   {#if entry.admin}Remove admin{:else}Set admin{/if}
                 </a>
-                <a class="dropdown-item" on:click={() => changePassword(entry)}>
+                <a class="dropdown-item" on:click={() => changePassword(index)}>
                   Change password
                 </a>
-                <a class="dropdown-item" on:click={() => deleteAccount(entry)}>
+                <a class="dropdown-item" on:click={() => deleteAccount(index)}>
                   Delete account
                 </a>
               </div>
