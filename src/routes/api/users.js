@@ -63,6 +63,14 @@ export const patch = authWrapper(
     }
 
     if (req.body.hasOwnProperty('disabled')) {
+      if (req.session._id == req.body.id) {
+        return res.end(
+          JSON.stringify({
+            status: false,
+            error: 'Cannot disable current user'
+          })
+        )
+      }
       data.disabled = Boolean(req.body.disabled)
     }
 
@@ -93,9 +101,16 @@ export const patch = authWrapper(
 
 export const del = authWrapper(
   async function (req, res, next) {
+    if (req.session._id == req.body.id) {
+      return res.end(
+        JSON.stringify({ status: false, error: 'Cannot delete current user' })
+      )
+    }
+
     if (req.body.id && (await User.findByIdAndRemove(req.body.id))) {
       return res.end(JSON.stringify({ status: true }))
     }
+
     return res.end(JSON.stringify({ status: false }))
   },
   { admin: true }
