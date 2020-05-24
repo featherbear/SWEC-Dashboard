@@ -9,6 +9,9 @@
 </script>
 
 <script>
+  import DropdownContainer from "../../../components/DropdownContainer.svelte";
+  import DropdownItem from "../../../components/DropdownItem.svelte";
+
   export let data = [];
 
   async function toggleDisabled(index) {
@@ -24,7 +27,7 @@
       headers: { "Content-Type": "application/json" }
     });
     if (result.status) {
-      data[index].disabled = newState
+      data[index].disabled = newState;
       // let idx = data.findIndex(d => d._id == entry._id );
       // data = [
       //   ...data.slice(0, idx),
@@ -96,36 +99,20 @@
         <td class:disabled={entry.disabled}>{entry.lastName || '-'}</td>
         <td class:disabled={entry.disabled}>{entry.admin ? 'Yes' : 'No'}</td>
         <td>
-          <div class="dropdown is-hoverable">
-            <div class="dropdown-trigger">
-              <button
-                class="button"
-                aria-haspopup="true"
-                aria-controls="dropdown-menu">
-                <span>Manage</span>
-                <span class="icon is-small">
-                  <i class="fas fa-angle-down" aria-hidden="true" />
-                </span>
-              </button>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-              <div class="dropdown-content">
-                <div class="dropdown-item" on:click={() => toggleDisabled(index)}>
-                  {#if entry.disabled}Enable account{:else}Disable account{/if}
-                </div>
-                <div class="dropdown-item" on:click={() => toggleAdmin(index)}>
-                  {#if entry.admin}Remove admin{:else}Set admin{/if}
-                </div>
-                <div class="dropdown-item" on:click={() => changePassword(index)}>
-                  Change password
-                </div>
-                <div class="dropdown-item" on:click={() => deleteAccount(index)}>
-                  Delete account
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <DropdownContainer>
+            <DropdownItem on:click={() => toggleDisabled(index)}>
+              {#if entry.disabled}Enable account{:else}Disable account{/if}
+            </DropdownItem>
+            <DropdownItem on:click={() => toggleAdmin(index)}>
+              {#if entry.admin}Remove admin{:else}Set admin{/if}
+            </DropdownItem>
+            <DropdownItem on:click={() => changePassword(index)}>
+              Change password
+            </DropdownItem>
+            <DropdownItem on:click={() => deleteAccount(index)}>
+              Delete account
+            </DropdownItem>
+          </DropdownContainer>
         </td>
       </tr>
     {/each}
