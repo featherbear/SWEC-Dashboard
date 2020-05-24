@@ -10,10 +10,10 @@ const UserSchema = new mongoose.Schema({
   },
   firstName: { type: String, trim: true },
   lastName: { type: String, trim: true },
-  isLocal: { type: Boolean, default: false },
-  password: { type: String, bcrypt: true },
-  admin: { type: Boolean, default: false },
-  disabled: { type: Boolean, default: false },
+  isLocal: { type: Boolean, required: true },
+  password: { type: String, bcrypt: true, min: 15 },
+  admin: Boolean,
+  disabled: Boolean,
 })
 UserSchema.plugin(require('mongoose-bcrypt'))
 
