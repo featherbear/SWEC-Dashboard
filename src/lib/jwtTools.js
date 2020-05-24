@@ -2,10 +2,12 @@ import data from './dataStore.js'
 import nJwt from 'njwt'
 import { Model as User } from '../schemas/User'
 
-export function decode (jwt) {
+export async function decode (jwt) {
   try {
     let user = { ...nJwt.verify(jwt, data.cryptoKey).body };
-    user.admin = Boolean(data.admins[user.sub])
+    // Do some cache thing so that the database isn't always requested.
+    // Redis? Local cache with timer?
+    user.admin = Boolean(await User.findOne({_id: user.sub, admin: true}))
     return user;
   } catch {
     return null

@@ -1,5 +1,4 @@
 import { createToken } from '../../lib/jwtTools'
-import data from '../../lib/dataStore'
 import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
 import { Model as User } from '../../schemas/User'
@@ -32,7 +31,6 @@ async function handleLocal (username, password) {
   }
 
   if (user && user.verifyPasswordSync(password)) {
-    data.admins[user._id] = user.admin
     return JSON.stringify({
       status: true,
       jwt: createToken({
@@ -76,7 +74,6 @@ async function handleElvanto (token) {
       })
     }
 
-    data.admins[user._id] = user.admin
     return JSON.stringify({
       status: true,
       jwt: createToken({

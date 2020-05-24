@@ -9,10 +9,6 @@ try {
     console.log('Generated secure key')
 }
 
-let admins = [];
-console.log("a");
-
 export default {
-  cryptoKey,
-  admins
+  cryptoKey
 }

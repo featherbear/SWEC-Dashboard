@@ -30,10 +30,14 @@ mongoose
         cookierParser(),
         compression({ threshold: 0 }),
         sirv('static', { dev }),
+        async function (req, res, next) {
+          // Can probably cache this somewhere so it doesn't resolve the DB every time?
+          req.session = await decode(req.cookies.token)
+          next()
+        },
         sapper.middleware({
           session: (req, res) => {
-            console.log("Decode session cookie");
-            return decode(req.cookies.token)
+            return req.session
           }
         })
       )
