@@ -1,6 +1,9 @@
 <script>
   export let showAdmin = false;
 
+  import SidebarList from "./SidebarList.svelte";
+  import SidebarListItem from "./SidebarListItem.svelte";
+
   import { stores } from "@sapper/app";
   const { page } = stores();
   let elem;
@@ -18,15 +21,6 @@
 <style>
   aside > a {
     color: #4a4a4a;
-  }
-
-  .menu-label {
-    color: #8f99a3;
-    letter-spacing: 1.3;
-    font-weight: 700;
-  }
-  .menu-list a,
-  .menu > a {
     font-size: 14px;
     font-weight: 700;
   }
@@ -34,39 +28,28 @@
 
 <aside class="menu" bind:this={elem}>
   <a href="/portal">Dashboard</a>
-  <p class="menu-label">Notices</p>
-  <ul class="menu-list">
-    <li>
-      <a href="/portal/notices/submit">Submit Notice</a>
-    </li>
-    <li>
-      <a href="/portal/notices">View Notices</a>
-    </li>
-  </ul>
-  <p class="menu-label">Bulletin</p>
-  <ul class="menu-list">
-    <li>
-      <a href="/portal/bulletin/generate">Generate Bulletin</a>
-    </li>
-    <li>
-      <a href="/portal/bulletin/view">View Bulletins</a>
-    </li>
-  </ul>
-  <p class="menu-label">Sermon Outline</p>
-  <ul class="menu-list">
-    <li>
-      <a href="/portal/sermon">Manage Outlines</a>
-    </li>
-  </ul>
-  {#if showAdmin }
-    <p class="menu-label">Admin</p>
-    <ul class="menu-list">
-      <li>
-        <a href="/portal/sites">Manage Sites</a>
-      </li>
-      <li>
-        <a href="/portal/users">User Management</a>
-      </li>
-    </ul>
+
+  <SidebarList label="Notices">
+    <SidebarListItem href="/portal/notices/submit">
+      Submit Notice
+    </SidebarListItem>
+    <SidebarListItem href="/portal/notices">View Notices</SidebarListItem>
+  </SidebarList>
+  <SidebarList label="Bulletin">
+    <SidebarListItem href="/portal/bulletin/generate">
+      Generate Bulletin
+    </SidebarListItem>
+    <SidebarListItem href="/portal/bulletin/view">
+      View Bulletins
+    </SidebarListItem>
+  </SidebarList>
+  <SidebarList label="Bulletin">
+    <SidebarListItem href="/portal/sermon">Manage Outlines</SidebarListItem>
+  </SidebarList>
+  {#if showAdmin}
+    <SidebarList label="Admin">
+      <SidebarListItem href="/portal/sites">Manage Sites</SidebarListItem>
+      <SidebarListItem href="/portal/users">User Management</SidebarListItem>
+    </SidebarList>
   {/if}
 </aside>
