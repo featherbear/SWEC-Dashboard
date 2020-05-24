@@ -12,43 +12,47 @@
   export let data = [];
 
   async function toggleDisabled(entry) {
+    let newState = !entry.disabled;
     let result = await fetch("/api/users", {
       method: "PATCH",
       body: JSON.stringify({
         id: entry._id,
-        disabled: !entry.disabled
+        disabled: newState
       }),
       headers: { "Content-Type": "application/json" }
     });
     if (result.status) {
+      let idx = data.findIndex(d => d._id == entry._id );
       data = [
-        ...data.filter(d => d != entry),
-        { ...entry, disabled: !entry.disabled }
+        ...data.slice(0, idx),
+        { ...entry, disabled: newState },
+        ...data.slice(idx + 1)
       ];
     }
   }
   async function toggleAdmin(entry) {
+    let newState = !entry.admin;
     let result = await fetch("/api/users", {
       method: "PATCH",
       body: JSON.stringify({
         id: entry._id,
-        admin: !entry.admin
+        admin: newState
       }),
       headers: { "Content-Type": "application/json" }
     });
     if (result.status) {
+      let idx = data.findIndex(d => d._id == entry._id );
       data = [
-        ...data.filter(d => d != entry),
-        { ...entry, admin: !entry.admin }
+        ...data.slice(0, idx),
+        { ...entry, admin: newState },
+        ...data.slice(idx + 1)
       ];
     }
   }
-  async function changePassword(entry) {
-  }
+  async function changePassword(entry) {}
 
   async function deleteAccount(entry) {
     // Confirm prompt, enter username and checkbox
-    
     // let result = await fetch("/api/users", {
     //   method: "DELETE",
     //   body: JSON.stringify({
