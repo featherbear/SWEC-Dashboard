@@ -110,18 +110,18 @@
             </div>
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">
-                <a class="dropdown-item" on:click={() => toggleDisabled(index)}>
+                <div class="dropdown-item" on:click={() => toggleDisabled(index)}>
                   {#if entry.disabled}Enable account{:else}Disable account{/if}
-                </a>
-                <a class="dropdown-item" on:click={() => toggleAdmin(index)}>
+                </div>
+                <div class="dropdown-item" on:click={() => toggleAdmin(index)}>
                   {#if entry.admin}Remove admin{:else}Set admin{/if}
-                </a>
-                <a class="dropdown-item" on:click={() => changePassword(index)}>
+                </div>
+                <div class="dropdown-item" on:click={() => changePassword(index)}>
                   Change password
-                </a>
-                <a class="dropdown-item" on:click={() => deleteAccount(index)}>
+                </div>
+                <div class="dropdown-item" on:click={() => deleteAccount(index)}>
                   Delete account
-                </a>
+                </div>
               </div>
             </div>
           </div>
