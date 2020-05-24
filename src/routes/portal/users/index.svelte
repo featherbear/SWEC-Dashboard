@@ -10,6 +10,56 @@
 
 <script>
   export let data = [];
+
+  async function toggleDisabled(entry) {
+    let result = await fetch("/api/users", {
+      method: "PATCH",
+      body: JSON.stringify({
+        id: entry._id,
+        disabled: !entry.disabled
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    if (result.status) {
+      data = [
+        ...data.filter(d => d != entry),
+        { ...entry, disabled: !entry.disabled }
+      ];
+    }
+  }
+  async function toggleAdmin(entry) {
+    let result = await fetch("/api/users", {
+      method: "PATCH",
+      body: JSON.stringify({
+        id: entry._id,
+        admin: !entry.admin
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    if (result.status) {
+      data = [
+        ...data.filter(d => d != entry),
+        { ...entry, admin: !entry.admin }
+      ];
+    }
+  }
+  async function changePassword(entry) {
+  }
+
+  async function deleteAccount(entry) {
+    // Confirm prompt, enter username and checkbox
+    
+    // let result = await fetch("/api/users", {
+    //   method: "DELETE",
+    //   body: JSON.stringify({
+    //     id: entry._id,
+    //   }),
+    //   headers: { "Content-Type": "application/json" }
+    // });
+    // if (result.status) {
+    //   data = [...data.filter(d => d != entry)];
+    // }
+  }
 </script>
 
 <style>
@@ -25,23 +75,48 @@
       <th>Username</th>
       <th>First Name</th>
       <th>Last Name</th>
-      <th>Actions</th>
+      <th>Admin</th>
+      <th />
     </tr>
   </thead>
   <tbody>
-    {#each data as entry}
-      <tr class:disabled={entry.disabled}>
-        <td>{entry.username}</td>
-        <td>{entry.firstName}</td>
-        <td>{entry.lastName}</td>
+    {#each data as entry (entry._id)}
+      <tr>
+        <td class:disabled={entry.disabled}>{entry.username}</td>
+        <td class:disabled={entry.disabled}>{entry.firstName || '-'}</td>
+        <td class:disabled={entry.disabled}>{entry.lastName || '-'}</td>
+        <td class:disabled={entry.disabled}>{entry.admin ? 'Yes' : 'No'}</td>
         <td>
-          <div
-            on:click={() => {
-              !entry.disabled;
-            }}>
-            {#if entry.disabled}Enable account{:else}Disable account{/if}
+          <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+              <button
+                class="button"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu">
+                <span>Manage</span>
+                <span class="icon is-small">
+                  <i class="fas fa-angle-down" aria-hidden="true" />
+                </span>
+              </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+              <div class="dropdown-content">
+                <a class="dropdown-item" on:click={() => toggleDisabled(entry)}>
+                  {#if entry.disabled}Enable account{:else}Disable account{/if}
+                </a>
+                <a class="dropdown-item" on:click={() => toggleAdmin(entry)}>
+                  {#if entry.admin}Remove admin{:else}Set admin{/if}
+                </a>
+                <a class="dropdown-item" on:click={() => changePassword(entry)}>
+                  Change password
+                </a>
+                <a class="dropdown-item" on:click={() => deleteAccount(entry)}>
+                  Delete account
+                </a>
+              </div>
+            </div>
           </div>
-          <div>Change password</div>
+
         </td>
       </tr>
     {/each}

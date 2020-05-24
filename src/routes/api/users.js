@@ -3,7 +3,12 @@ import { authWrapper } from '../../lib/jwtTools'
 
 export const get = authWrapper(
   async function (req, res, next) {
-    return res.end(JSON.stringify(await User.find({}, { password: false })))
+    let data = await User.find({}, { password: false }, { lean: true })
+    // // {[id: ID, a: ..., b: ..., c: ...], ...} to {id: {a: ..., b: ..., c: ...}, ...}
+    // data = Object.fromEntries(
+    //   data.map(({ _id, ...userData }) => [_id, userData])
+    // )
+    return res.end(JSON.stringify(data))
   },
   { admin: true }
 )
@@ -66,7 +71,9 @@ export const patch = authWrapper(
     }
 
     if (Object.keys(data).length == 0) {
-      return res.end(JSON.stringify({ status: false, error: "Nothing to update" }))
+      return res.end(
+        JSON.stringify({ status: false, error: 'Nothing to update' })
+      )
     }
 
     let user = await User.findByIdAndUpdate(req.body.id, data)
