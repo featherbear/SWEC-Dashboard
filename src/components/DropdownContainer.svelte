@@ -1,12 +1,12 @@
 <script>
   export let hoverable = true;
-  export let text = "Dropdown";
+  export let label = "Dropdown";
 </script>
 
 <div class="dropdown" class:is-hoverable={hoverable}>
   <div class="dropdown-trigger">
     <button class="button">
-      <span>{text}</span>
+      <span>{label}</span>
       <span class="icon is-small">
         <i class="fas fa-angle-down" />
       </span>
