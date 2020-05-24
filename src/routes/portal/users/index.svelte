@@ -46,6 +46,7 @@
     });
     if (result.status) {
       data[index].admin = newState;
+      // TODO: Update dataStore.admins
       // let idx = data.findIndex(d => d._id == entry._id );
       // data = [
       //   ...data.slice(0, idx),

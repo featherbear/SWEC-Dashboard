@@ -1,9 +1,12 @@
-import data from './data.js'
+import data from './dataStore.js'
 import nJwt from 'njwt'
+import { Model as User } from '../schemas/User'
 
 export function decode (jwt) {
   try {
-    return { ...nJwt.verify(jwt, data.cryptoKey).body }
+    let user = { ...nJwt.verify(jwt, data.cryptoKey).body };
+    user.admin = Boolean(data.admins[user.sub])
+    return user;
   } catch {
     return null
   }
@@ -21,7 +24,7 @@ export function authWrapper (callback, options) {
 
   authOptions = { ...authOptions, ...(options || {}) }
 
-  return function (req, res, next) {
+  return async function (req, res, next) {
     let token = req.cookies.token
     if (!token && req.headers.authorization) {
       let [type, key] = req.headers.authorization.split(' ')
@@ -30,7 +33,7 @@ export function authWrapper (callback, options) {
       }
     }
 
-    let claim = (req.session = decode(token))
+    let claim = (req.session = await decode(token))
     if (
       (authOptions.login && !claim) ||
       (authOptions.admin && (!claim || !claim.admin))
@@ -38,9 +41,9 @@ export function authWrapper (callback, options) {
       res.writeHead(403)
       res.write(JSON.stringify({ status: false, error: 'Not authorised' }))
       return res.end()
-    } else {
-      return callback(req, res, next)
     }
+
+    return callback(req, res, next)
   }
 }
 

@@ -1,15 +1,28 @@
 import { createToken } from '../../lib/jwtTools'
+import data from '../../lib/dataStore'
 import fetch from 'node-fetch'
 import elvanto from 'elvanto-api'
 import { Model as User } from '../../schemas/User'
 
-User.create({ username: 'admin', isLocal: true, password: 'password' , admin: true})
+// Create during testing
+User.create({
+  username: 'admin',
+  isLocal: true,
+  password: 'password',
+  admin: true
+})
 
 async function handleLocal (username, password) {
   let user = await User.findOne({
     username: 'admin',
     isLocal: true
   })
+  if (!user) {
+    return JSON.stringify({
+      status: false,
+      error: 'Invalid username / password'
+    })
+  }
 
   if (user.disabled) {
     return JSON.stringify({
@@ -19,11 +32,12 @@ async function handleLocal (username, password) {
   }
 
   if (user && user.verifyPasswordSync(password)) {
+    data.admins[user._id] = user.admin
     return JSON.stringify({
       status: true,
       jwt: createToken({
         sub: user._id,
-        name: user.firstName || user.username,
+        name: user.firstName || user.username
         admin: user.admin
       })
     })
@@ -63,12 +77,12 @@ async function handleElvanto (token) {
       })
     }
 
+    data.admins[user._id] = user.admin
     return JSON.stringify({
       status: true,
       jwt: createToken({
         sub: user._id,
-        name: user.firstName,
-        admin: user.admin
+        name: user.firstName
       })
     })
   } else {
