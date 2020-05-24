@@ -23,7 +23,7 @@ mongoose
     useFindAndModify: false,
     useUnifiedTopology: true
   })
-  .then(({ connection }) => {
+  .then(() => {
     polka()
       .use(
         json(),
