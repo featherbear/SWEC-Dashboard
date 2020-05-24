@@ -1,17 +1,18 @@
 <script>
   export let showAdmin = false;
 
-  import { onMount } from "svelte";
+  import { stores } from "@sapper/app";
+  const { page } = stores();
+  let elem;
+  $: {
+    if (elem) {
+      let oldElem = elem.querySelector(".is-active");
+      oldElem && oldElem.classList.remove("is-active");
 
-  onMount(() => {
-    // Highlight the current menu item
-    for (let elem of document.querySelectorAll("aside.menu a")) {
-      if (elem.pathname == location.pathname) {
-        elem.classList.add("is-active");
-        break;
-      }
+      let newElem = elem.querySelector(`a[href$='${$page.path}']`);
+      newElem && newElem.classList.add("is-active");
     }
-  });
+  }
 </script>
 
 <style>
@@ -31,7 +32,7 @@
   }
 </style>
 
-<aside class="menu">
+<aside class="menu" bind:this={elem}>
   <a href="/portal">Dashboard</a>
   <p class="menu-label">Notices</p>
   <ul class="menu-list">
