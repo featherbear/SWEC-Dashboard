@@ -44,10 +44,6 @@ function createModal (Element, props) {
     modal.$destroy()
   })
 
-  modal.$on('message', () => {
-    console.log('got MSG')
-  })
-
   return modal.promise || modal
 }
 
