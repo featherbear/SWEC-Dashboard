@@ -5,9 +5,9 @@
 
 <div class="modal is-active">
   <div class="modal-background" on:click={() => dispatch('destroy')} />
-  <slot name="launcherTarget">
-    <div class="modal-content">
-        <slot {$$props} />
+  <slot name="launcherTarget" {dispatch}>
+    <div class="modal-card">
+      <slot {dispatch} {$$props} />
     </div>
   </slot>
 </div>

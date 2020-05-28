@@ -3,13 +3,7 @@ import { detach, insert, noop } from 'svelte/internal'
 
 function createModal (Element, props) {
   let container = document.createElement('div')
-  container.className = 'modal-content'
-
-  const elem = new Element({
-    target: container,
-    props,
-    intro: true
-  })
+  container.className = 'modal-card'
 
   const modal = new Modal({
     target: document.body,
@@ -40,11 +34,21 @@ function createModal (Element, props) {
     }
   })
 
+  const elem = new Element({
+    target: container,
+    props: { ...props, dispatch: modal.$$.ctx.dispatch },
+    intro: true
+  })
+
   modal.$on('destroy', () => {
     modal.$destroy()
   })
 
-  return modal.promise
+  modal.$on('message', () => {
+    console.log('got MSG')
+  })
+
+  return modal.promise || modal
 }
 
 export default createModal
