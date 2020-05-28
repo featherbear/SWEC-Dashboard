@@ -17,24 +17,37 @@
   let isSaving = false;
   async function handleSave() {
     try {
+      let currentID = data && data.id
       isSaving = true;
       let postData = {
-        id: data.id,
         title: newTitle,
         custom: Object.fromEntries(
           customFields.filter(d => d[0].trim() && d[1].trim())
         )
       };
-      // await fetch("/api/sites", {
-      //   method: (data && data.id) ? "PATCH" : "POST",
-      //   body: JSON.stringify(newData),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // })
+      if (currentID) {
+        postData.id = currentID;
+      }
+
+      let resp = await fetch("/api/sites", {
+        method: currentID ? "PATCH" : "POST",
+        body: JSON.stringify(postData),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(r => r.json);
+      
+      if(!resp.status) {
+        throw new Error()
+      }
+      
+      if (!currentID) {
+        postData.id = resp._id;
+      }
+
       dispatch("accept", postData);
-      dispatch("destroy", postData);
-      // dispatch("accept", data);
+      dispatch("destroy");
+      
     } finally {
       isSaving = false;
     }
