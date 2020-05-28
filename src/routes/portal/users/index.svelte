@@ -14,6 +14,9 @@
 
   export let data = [];
 
+  import { stores } from "@sapper/app";
+  const { session } = stores();
+
   async function toggleDisabled(index) {
     let entry = data[index];
     let newState = !entry.disabled;
@@ -99,19 +102,25 @@
         <td class:disabled={entry.disabled}>{entry.lastName || '-'}</td>
         <td class:disabled={entry.disabled}>{entry.admin ? 'Yes' : 'No'}</td>
         <td>
-          <DropdownContainer>
-            <DropdownItem on:click={() => toggleDisabled(index)}>
-              {#if entry.disabled}Enable account{:else}Disable account{/if}
-            </DropdownItem>
-            <DropdownItem on:click={() => toggleAdmin(index)}>
-              {#if entry.admin}Remove admin{:else}Set admin{/if}
-            </DropdownItem>
+          <DropdownContainer label="Actions">
+            {#if $session.sub != entry._id}
+              <DropdownItem on:click={() => toggleDisabled(index)}>
+                {#if entry.disabled}Enable account{:else}Disable account{/if}
+              </DropdownItem>
+            {/if}
+            {#if $session.sub != entry._id}
+              <DropdownItem on:click={() => toggleAdmin(index)}>
+                {#if entry.admin}Remove admin{:else}Set admin{/if}
+              </DropdownItem>
+            {/if}
             <DropdownItem on:click={() => changePassword(index)}>
               Change password
             </DropdownItem>
-            <DropdownItem on:click={() => deleteAccount(index)}>
-              Delete account
-            </DropdownItem>
+            {#if $session.sub != entry._id}
+              <DropdownItem on:click={() => deleteAccount(index)}>
+                Delete account
+              </DropdownItem>
+            {/if}
           </DropdownContainer>
         </td>
       </tr>

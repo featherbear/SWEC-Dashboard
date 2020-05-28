@@ -53,24 +53,26 @@ export const patch = authWrapper(
       return res.end(JSON.stringify({ status: false }))
     }
 
+    if (req.session.sub == req.body.id) {
+      return res.end(
+        JSON.stringify({
+          status: false,
+          error: 'Cannot modify current user'
+        })
+      )
+    }
+
     if (req.body.hasOwnProperty('password')) {
       if (!req.body.password) {
         return res.end(
           JSON.stringify({ status: false, error: 'Password not valid' })
         )
       }
+      data.isLocal = true
       data.password = req.body.password
     }
 
     if (req.body.hasOwnProperty('disabled')) {
-      if (req.session._id == req.body.id) {
-        return res.end(
-          JSON.stringify({
-            status: false,
-            error: 'Cannot disable current user'
-          })
-        )
-      }
       data.disabled = Boolean(req.body.disabled)
     }
 
@@ -101,7 +103,7 @@ export const patch = authWrapper(
 
 export const del = authWrapper(
   async function (req, res, next) {
-    if (req.session._id == req.body.id) {
+    if (req.session.sub == req.body.id) {
       return res.end(
         JSON.stringify({ status: false, error: 'Cannot delete current user' })
       )
