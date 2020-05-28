@@ -4,12 +4,17 @@ import elvanto from 'elvanto-api'
 import { Model as User } from '../../schemas/User'
 
 // Create during testing
-User.create({
-  username: 'admin',
-  isLocal: true,
-  password: 'password',
-  admin: true
-})
+;(async function () {
+  try {
+    await User.create({
+      username: 'admin',
+      isLocal: true,
+      password: 'password',
+      admin: true
+    })
+  } catch {}
+  console.log('Created test user')
+})()
 
 async function handleLocal (username, password) {
   let user = await User.findOne({

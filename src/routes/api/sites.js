@@ -1,9 +1,14 @@
 import { Model as Site } from '../../schemas/Site'
 import { authWrapper } from '../../lib/jwtTools'
 
-Site.create({
-  title: 'Test title'
-})
+;(async function () {
+  try {
+    await Site.create({
+      title: 'Test title'
+    })
+  } catch {}
+  console.log('Created test site')
+})()
 
 export async function get (req, res, next) {
   let sites = await Site.find({}, null, { lean: true })
