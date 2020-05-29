@@ -19,6 +19,11 @@
 </script>
 
 <style>
+  aside {
+    position: sticky;
+    top: 0;
+  }
+
   aside > a {
     color: #4a4a4a;
     font-size: 14px;
