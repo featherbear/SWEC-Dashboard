@@ -1,9 +1,9 @@
 <script>
   export let data = {};
-  let title = data.title;
-  let description = data.description;
+  let title = data.title || "";
+  let description = data.description || "";
   let active = Boolean(data.active);
-  let site = data.sites;
+  let sites = data.sites || [];
   console.log(data);
 </script>
 
@@ -19,10 +19,16 @@
     <div class="content">
       <p>
         <strong>{title}</strong>
-        <small>{site}</small>
         <br />
         {description}
       </p>
+      {#if sites.length > 0}
+        <div class="tags">
+          {#each sites as site}
+            <span class="tag is-info is-light">{site.title}</span>
+          {/each}
+        </div>
+      {/if}
     </div>
   </div>
 </article>

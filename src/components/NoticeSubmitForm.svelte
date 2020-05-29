@@ -8,7 +8,7 @@
   export let sites = {};
 
   let elem;
-  
+
   let calendar;
   let calendarElement;
   onMount(async () => {
@@ -30,12 +30,22 @@
 <form
   bind:this={elem}
   on:submit|preventDefault={() => {
+    let targetSites = Object.keys(sites).filter(id => elem[`site_${id}`].checked);
+    if (targetSites.length == 0) {
+      throw new Error("Require site")
+      return;
+    }
+    let endDate = calendar.endDate || calendar.startDate;
+    if (!endDate) {
+      throw new Error("Require date")
+      return;
+    }
     dispatch('submit', {
       title: elem.title.value,
       description: elem.description.value,
-      sites: Object.keys(sites).filter(id => elem[`site_${id}`].checked),
+      sites: targetSites,
       startDate: calendar.startDate,
-      endDate: calendar.endDate || calendar.startDate
+      endDate
     });
   }}>
   <div class="field">
