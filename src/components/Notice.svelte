@@ -3,14 +3,21 @@
   let title = data.title || "";
   let description = data.description || "";
   let active = Boolean(data.active);
-  let sites = data.sites || [];
-  console.log(data);
+  let sites = data.sites || {};
+
+  export let filteredSites = [];
+
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
 </script>
 
 <style>
   .inactive {
     font-style: italic;
     color: #a7a7a7;
+  }
+  span.tag {
+    cursor: pointer;
   }
 </style>
 
@@ -22,13 +29,16 @@
         <br />
         {description}
       </p>
-      {#if sites.length > 0}
-        <div class="tags">
-          {#each sites as site}
-            <span class="tag is-info is-light">{site.title}</span>
-          {/each}
-        </div>
-      {/if}
+      <div class="tags">
+        {#each Object.entries(sites) as [id, { title }]}
+          <span
+            class="tag is-info"
+            class:is-light={filteredSites.indexOf(id) == -1}
+            on:click={() => dispatch('tagClick', id)}>
+            {title}
+          </span>
+        {/each}
+      </div>
     </div>
   </div>
 </article>
