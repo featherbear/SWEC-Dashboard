@@ -5,13 +5,29 @@ import { authWrapper } from '../../lib/jwtTools'
 
 export const get = authWrapper(async function (req, res, next) {
   // Get all notices if admin
-  let notices = await Notice.find(req.session.admin ? {} : { active: true })
+  let query = {}
+  if (req.session) {
+    if (!req.session.admin) {
+      query = {
+        $or: [
+          { author: req.session.sub, active: true },
+          { active: true, approved: true }
+        ]
+      }
+    }
+  } else {
+    query = { active: true, approved: true }
+  }
+
+  let notices = await Notice.find(query)
 
   return res.end(JSON.stringify(notices))
 })
 
 export const post = authWrapper(
   async function (req, res, next) {
+    let approved = Boolean(req.session.admin)
+
     const notice = await Notice.create({
       author: req.session.sub,
       title: req.body.title,
@@ -19,12 +35,13 @@ export const post = authWrapper(
       description: req.body.description,
       startDate: req.body.startDate,
       endDate: req.body.endDate,
-      active: true
+      active: true,
+      approved
     })
 
     return res.end(JSON.stringify({ status: true }))
   },
   {
-    admin: true
+    login: true
   }
 )

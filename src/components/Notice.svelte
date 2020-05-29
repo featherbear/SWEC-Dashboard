@@ -3,6 +3,7 @@
   let title = data.title || "";
   let description = data.description || "";
   let active = Boolean(data.active);
+  let approved = Boolean(data.approved);
   let sites = data.sites || {};
 
   export let filteredSites = [];
@@ -14,14 +15,17 @@
 <style>
   .inactive {
     font-style: italic;
-    color: #a7a7a7;
+    color: #a7a7a7 !important;
+  }
+  .pending {
+    color: darkgoldenrod;
   }
   span.tag {
     cursor: pointer;
   }
 </style>
 
-<article class="media" class:inactive={!active}>
+<article class="media" class:pending={!approved} class:inactive={!active}>
   <div class="media-content">
     <div class="content">
       <p>

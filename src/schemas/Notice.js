@@ -18,7 +18,8 @@ const NoticeSchema = new mongoose.Schema({
       autopopulate: { select: ['title'] }
     }
   ],
-  active: Boolean
+  active: Boolean,
+  approved: Boolean
 })
 NoticeSchema.plugin(require('mongoose-autopopulate'))
 
