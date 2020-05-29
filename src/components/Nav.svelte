@@ -10,7 +10,6 @@
 </style>
 
 <nav class="navbar is-white">
-  <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item" href="/">SWEC Dashboard</a>
     </div>
@@ -40,5 +39,4 @@
         <a class="navbar-item" href="/logout">Logout</a>
       </div>
     </div>
-  </div>
 </nav>
