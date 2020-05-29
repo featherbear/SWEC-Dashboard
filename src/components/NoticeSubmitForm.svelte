@@ -17,12 +17,17 @@
     )).default;
 
     calendar = bulmaCalendar.attach(calendarElement, {
+      color: "info",
+
       clearButton: false,
-      todayButton: false,
       displayMode: "inline",
+      type: "date",
+
+      allowSameDayRange: true,
       isRange: true,
-      disabledWeekDays: [1, 2, 3, 4, 5, 6]
+
       // Sunday is 0
+      disabledWeekDays: [1, 2, 3, 4, 5, 6]
     })[0];
   });
 </script>
@@ -32,12 +37,12 @@
   on:submit|preventDefault={() => {
     let targetSites = Object.keys(sites).filter(id => elem[`site_${id}`].checked);
     if (targetSites.length == 0) {
-      throw new Error("Require site")
+      throw new Error('Require site');
       return;
     }
     let endDate = calendar.endDate || calendar.startDate;
     if (!endDate) {
-      throw new Error("Require date")
+      throw new Error('Require date');
       return;
     }
     dispatch('submit', {
@@ -77,7 +82,7 @@
       <div class="field" name="siteField">
         {#each Object.entries(sites) as [id, data]}
           <input
-            class="is-checkradio is-block is-primary"
+            class="is-checkradio is-block is-info"
             type="checkbox"
             id={'site_' + id}
             name={'site_' + id} />
