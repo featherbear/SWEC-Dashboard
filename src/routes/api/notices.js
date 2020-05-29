@@ -15,6 +15,7 @@ export const post = authWrapper(
     const notice = await Notice.create({
       author: req.session.sub,
       title: req.body.title,
+      sites: req.body.sites,
       description: req.body.description,
       startDate: req.body.startDate,
       endDate: req.body.endDate,

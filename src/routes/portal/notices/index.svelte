@@ -9,13 +9,12 @@
 </script>
 
 <script>
+  import Notice from "../../../components/Notice.svelte";
   export let data = [];
 </script>
 
-<ul>
-  {#if Object.keys(data).length != 0}
-    {#each data as entry}
-      <li>{entry.title} - {entry.description}</li>
-    {/each}
-  {:else}No data!{/if}
-</ul>
+{#if Object.keys(data).length != 0}
+  {#each data as entry}
+    <Notice data={entry} />
+  {/each}
+{:else}No data!{/if}

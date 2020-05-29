@@ -11,7 +11,13 @@ const NoticeSchema = new mongoose.Schema({
     required: true,
     autopopulate: { select: ['firstName', 'lastName'] }
   },
-  site: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Site' }],
+  sites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Site',
+      autopopulate: { select: ['title'] }
+    }
+  ],
   active: Boolean
 })
 NoticeSchema.plugin(require('mongoose-autopopulate'))
