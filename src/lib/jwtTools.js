@@ -18,7 +18,7 @@ export function authWrapper (callback, options) {
   let authOptions = {
     // LOGIN // If true, only authenticated users are allowed access
     // LOGIN // If false, guest users are allowed access
-    login: true,
+    login: false,
 
     // ADMIN // If true, only administrators are allowed access - implies `login: true`
     admin: false
