@@ -1,8 +1,8 @@
 <script context="module">
   export async function preload({ params, query }, session) {
-    let notices = await this.fetch("http://localhost:3000/api/notices").then(
-      r => r.json()
-    );
+    let notices = await this.fetch("http://localhost:3000/api/notices", {
+      credentials: "include"
+    }).then(r => r.json());
 
     return {
       data: notices.map(d => ({
